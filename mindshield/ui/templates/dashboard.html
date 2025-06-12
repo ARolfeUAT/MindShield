@@ -5,16 +5,50 @@
 {% block content %}
 <h2 class="text-xl font-semibold mb-4">MindShield Dashboard</h2>
 
+<!-- Status Summary -->
+<div class="bg-white p-6 rounded-lg shadow-md mb-6">
+    <h3 class="text-lg font-medium mb-4">Status Summary</h3>
+    <div class="grid grid-cols-3 gap-4">
+        <div class="bg-yellow-100 p-4 rounded text-center">
+            <p class="text-sm font-medium text-yellow-800">Pending</p>
+            <p class="text-lg font-bold">{{ status_summary.pending }}</p>
+        </div>
+        <div class="bg-green-100 p-4 rounded text-center">
+            <p class="text-sm font-medium text-green-800">Approved</p>
+            <p class="text-lg font-bold">{{ status_summary.approved }}</p>
+        </div>
+        <div class="bg-red-100 p-4 rounded text-center">
+            <p class="text-sm font-medium text-red-800">Denied</p>
+            <p class="text-lg font-bold">{{ status_summary.denied }}</p>
+        </div>
+    </div>
+</div>
+
 <!-- Access Requests -->
 <div class="bg-white p-6 rounded-lg shadow-md mb-6">
     <h3 class="text-lg font-medium mb-4">Access Requests</h3>
+    <!-- Search Bar -->
+    <form method="get" class="mb-4">
+        <input type="text" name="search" placeholder="Search by device, user, or IPv6" class="w-full p-2 border rounded" value="{{ request.args.get('search', '') }}">
+        <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+    </form>
+    <!-- Sorting Links -->
+    <div class="mb-4">
+        <span class="mr-2">Sort by:</span>
+        <a href="{{ url_for('ui.dashboard', sort='timestamp', order='desc' if request.args.get('sort') == 'timestamp' and request.args.get('order') == 'asc' else 'asc') }}" class="text-blue-500 hover:underline">Timestamp</a>
+        <a href="{{ url_for('ui.dashboard', sort='status', order='desc' if request.args.get('sort') == 'status' and request.args.get('order') == 'asc' else 'asc') }}" class="ml-2 text-blue-500 hover:underline">Status</a>
+        <a href="{{ url_for('ui.dashboard', sort='device_type', order='desc' if request.args.get('sort') == 'device_type' and request.args.get('order') == 'asc' else 'asc') }}" class="ml-2 text-blue-500 hover:underline">Device Type</a>
+    </div>
     <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-gray-200">
                     <th class="p-3">Request ID</th>
                     <th class="p-3">User ID</th>
+                    <th class="p-3">Device Name</th>
+                    <th class="p-3">Device Type</th>
                     <th class="p-3">Device ID</th>
+                    <th class="p-3">IPv6 Address</th>
                     <th class="p-3">Timestamp</th>
                     <th class="p-3">Status</th>
                     <th class="p-3">Actions</th>
@@ -25,7 +59,10 @@
                 <tr class="border-b hover:bg-gray-50">
                     <td class="p-3">{{ request.request_id }}</td>
                     <td class="p-3">{{ request.user_id }}</td>
+                    <td class="p-3">{{ request.device_name }}</td>
+                    <td class="p-3">{{ request.device_type }}</td>
                     <td class="p-3">{{ request.device_id }}</td>
+                    <td class="p-3">{{ request.ipv6_address }}</td>
                     <td class="p-3">{{ request.timestamp }}</td>
                     <td class="p-3">
                         <span class="inline-block px-2 py-1 rounded text-sm
@@ -72,7 +109,7 @@
                     <td class="p-3">{{ log.request_id }}</td>
                     <td class="p-3">{{ log.action }}</td>
                     <td class="p-3">{{ log.timestamp }}</td>
-                </tr>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>

@@ -1,3 +1,4 @@
+import copy
 import pytest
 from flask import Flask
 from mindshield.ui import ui_blueprint
@@ -11,9 +12,10 @@ def app():
     flask_app.config['TESTING'] = True
     flask_app.register_blueprint(ui_blueprint, url_prefix='/mindshield')
 
-    # Mock data for testing
-    flask_app.config['MOCK_REQUESTS'] = generate_mock_data()['requests']
-    flask_app.config['MOCK_LOGS'] = generate_mock_data()['logs']
+    # Deep copy mock data to prevent state leakage
+    mock_data = generate_mock_data()
+    flask_app.config['MOCK_REQUESTS'] = copy.deepcopy(mock_data['requests'])
+    flask_app.config['MOCK_LOGS'] = copy.deepcopy(mock_data['logs'])
 
     return flask_app
 
