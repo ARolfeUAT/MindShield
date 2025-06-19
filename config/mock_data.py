@@ -1,5 +1,6 @@
 """Generates mock data for MindShield UI testing."""
 
+
 def generate_mock_data():
     """Generates mock access requests and logs.
 

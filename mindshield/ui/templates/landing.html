@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}MindShield{% endblock %}
+
+{% block content %}
+<div class="bg-cover bg-center h-screen" style="background-image: url('{{ url_for('ui.static', filename='images/landing_screen_background.jpg') }}');">
+    <div class="h-full bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="text-center text-white">
+            <h2 class="text-4xl font-bold mb-4">Secure Your Brain-Computer Interface</h2>
+            <p class="text-lg mb-6 max-w-2xl mx-auto">
+                MindShield protects your neural data with blockchain-based security, giving you control over your BCI. Built for medical, gaming, and military applications, it ensures privacy and trust.
+            </p>
+            <a href="{{ url_for('ui.dashboard') }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600">
+                View Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
