@@ -1,5 +1,6 @@
 """Tests for MindShield UI Flask Blueprint."""
 
+
 def test_landing_page_get(client):
     """Tests GET /mindshield/ renders landing page."""
     response = client.get('/mindshield/')
@@ -7,6 +8,7 @@ def test_landing_page_get(client):
     assert b'MindShield' in response.data
     assert b'Secure Your Brain-Computer Interface' in response.data
     assert b'View Dashboard' in response.data
+    assert b'landing_screen_background.jpg' in response.data
 
 
 def test_dashboard_get(client, mock_requests, mock_logs):
